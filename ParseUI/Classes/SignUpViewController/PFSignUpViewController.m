@@ -260,7 +260,7 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         dictionary[PFSignUpViewControllerDelegateInfoAdditionalKey] = additional;
     }
     
-    dictionary[PFSignUpViewControllerDelegateInfoFullNameKey] = fullName;
+    dictionary[@"fullNameKey"] = fullName;
     
     if (_delegateExistingMethods.shouldSignUp) {
         if (![_delegate signUpViewController:self shouldBeginSignUp:dictionary]) {
@@ -271,7 +271,6 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     if ([fullName length] == 0) {
         NSString *errorMessage = NSLocalizedString(@"First And Last Name must be set.",
                                                    @"Name missing error message in PFSignUpViewController");
-        errorMessage = [NSString stringWithFormat:errorMessage, (unsigned long)_minPasswordLength];
         NSError *error = [NSError errorWithDomain:PFParseErrorDomain
                                              code:0
                                          userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
@@ -284,7 +283,6 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     if ([email length] == 0) {
         NSString *errorMessage = NSLocalizedString(@"Email must be set.",
                                                    @"Email missing error message in PFSignUpViewController");
-        errorMessage = [NSString stringWithFormat:errorMessage, (unsigned long)_minPasswordLength];
         NSError *error = [NSError errorWithDomain:PFParseErrorDomain
                                              code:0
                                          userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
