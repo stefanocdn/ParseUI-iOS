@@ -28,6 +28,7 @@
 #import "PFRect.h"
 #import "PFTextButton.h"
 #import "PFTextField.h"
+#import "PFActionButton.h"
 
 static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
 
