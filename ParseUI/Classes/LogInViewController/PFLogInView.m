@@ -50,7 +50,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
 }
 
 + (PFActionButtonConfiguration *)_defaultSignUpButtonConfiguration {
-    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:216.0f/255.0f green:83.0f/255.0f blue:47.0f/255.0f]
+    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:216.0f/255.0f green:83.0f/255.0f blue:47.0f/255.0f alpha:1.0]
                                                                                                              image:nil];
     NSString *title = NSLocalizedString(@"Create an Account", @"Create an Account");
     [configuration setTitle:title forButtonStyle:PFActionButtonStyleNormal];

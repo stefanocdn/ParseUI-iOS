@@ -211,6 +211,7 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
                                   action:@selector(_dismissAction)
                         forControlEvents:UIControlEventTouchUpInside];
     _signUpView.usernameField.delegate = self;
+    _signUpView.userLastNameField.delegate = self;
     _signUpView.passwordField.delegate = self;
     _signUpView.emailField.delegate = self;
     _signUpView.additionalField.delegate = self;
@@ -244,15 +245,21 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
 
     [self _dismissKeyboard];
     
-    NSString *fullName = _signUpView.usernameField.text ?: @"";
+    NSString *firstName = _signUpView.usernameField.text ?: @"";
+    NSString *lastName = _signUpView.userLastNameField.text ?: @"";
     NSString *username = _signUpView.emailField.text ?: @"";
     NSString *password = _signUpView.passwordField.text ?: @"";
     NSString *email = (self.emailAsUsername ? username : _signUpView.emailField.text);
     NSString *additional = _signUpView.additionalField.text;
 
-    NSMutableDictionary *dictionary = [@{ PFSignUpViewControllerDelegateInfoUsernameKey : username,
-                                          PFSignUpViewControllerDelegateInfoPasswordKey : password } mutableCopy];
-
+    NSMutableDictionary *dictionary = [@{ PFSignUpViewControllerDelegateInfoPasswordKey : password } mutableCopy];
+    
+    if (firstName) {
+        dictionary[@"firstNameKey"] = firstName;
+    }
+    if (lastName) {
+        dictionary[@"lastNameKey"] = lastName;
+    }
     if (email) {
         dictionary[PFSignUpViewControllerDelegateInfoEmailKey] = email;
     }
@@ -260,17 +267,27 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         dictionary[PFSignUpViewControllerDelegateInfoAdditionalKey] = additional;
     }
     
-    dictionary[@"fullNameKey"] = fullName;
-    
     if (_delegateExistingMethods.shouldSignUp) {
         if (![_delegate signUpViewController:self shouldBeginSignUp:dictionary]) {
             return;
         }
     }
     
-    if ([fullName length] == 0) {
-        NSString *errorMessage = NSLocalizedString(@"First And Last Name must be set.",
-                                                   @"Name missing error message in PFSignUpViewController");
+    if ([firstName length] == 0) {
+        NSString *errorMessage = NSLocalizedString(@"First Name must be set.",
+                                                   @"First Name missing error message in PFSignUpViewController");
+        NSError *error = [NSError errorWithDomain:PFParseErrorDomain
+                                             code:0
+                                         userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
+        [self _signUpDidFailWithError:error];
+        [_signUpView.usernameField becomeFirstResponder];
+        
+        return;
+    }
+    
+    if ([lastName length] == 0) {
+        NSString *errorMessage = NSLocalizedString(@"Last Name must be set.",
+                                                   @"Last Name missing error message in PFSignUpViewController");
         NSError *error = [NSError errorWithDomain:PFParseErrorDomain
                                              code:0
                                          userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
@@ -308,8 +325,10 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     PFUser *user = [PFUser user];
     user.username = username;
     user.password = password;
-    user[@"fullName"] = fullName;
-    user[@"fullNameLower"] = [fullName lowercaseString];
+    
+    NSString *fullNameString = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    user[@"fullName"] = fullNameString;
+    user[@"fullNameLower"] = [fullNameString lowercaseString];
     if (email) {
         user.email = email;
     }
@@ -322,10 +341,18 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     if ([_signUpView.signUpButton isKindOfClass:[PFPrimaryButton class]]) {
         [(PFPrimaryButton *)_signUpView.signUpButton setLoading:YES];
     }
+    
+    if ([_signUpView.signUpButton isKindOfClass:[PFActionButton class]]) {
+        [(PFActionButton *)_signUpView.signUpButton setLoading:YES];
+    }
+    
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         self.loading = NO;
-        if ([_signUpView.signUpButton isKindOfClass:[PFPrimaryButton class]]) {
-            [(PFPrimaryButton *)_signUpView.signUpButton setLoading:NO];
+//        if ([_signUpView.signUpButton isKindOfClass:[PFPrimaryButton class]]) {
+//            [(PFPrimaryButton *)_signUpView.signUpButton setLoading:NO];
+//        }
+        if ([_signUpView.signUpButton isKindOfClass:[PFActionButton class]]) {
+            [(PFActionButton *)_signUpView.signUpButton setLoading:NO];
         }
 
         if (succeeded) {

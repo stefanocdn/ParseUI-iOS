@@ -71,6 +71,13 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
     _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _usernameField.returnKeyType = UIReturnKeyNext;
     [self addSubview:_usernameField];
+    
+    _userLastNameField = [[PFTextField alloc] initWithFrame:CGRectZero
+                                         separatorStyle:PFTextFieldSeparatorStyleNone];
+    _userLastNameField.autocorrectionType = UITextAutocorrectionTypeNo;
+    _userLastNameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _userLastNameField.returnKeyType = UIReturnKeyNext;
+    [self addSubview:_userLastNameField];
     [self _updateUsernameFieldStyle];
 
     _passwordField = [[PFTextField alloc] initWithFrame:CGRectZero
@@ -167,6 +174,14 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
         currentY = CGRectGetMaxY(frame);
     }
     
+    if (_userLastNameField) {
+        CGRect frame = PFRectMakeWithSizeCenteredInRect([_userLastNameField sizeThatFits:contentSize], contentRect);
+        frame.origin.y = currentY;
+        _userLastNameField.frame = frame;
+        
+        currentY = CGRectGetMaxY(frame);
+    }
+    
     if (_emailField && !_emailAsUsername) {
         CGRect frame = PFRectMakeWithSizeCenteredInRect([_emailField sizeThatFits:contentSize], contentRect);
         frame.origin.y = currentY;
@@ -224,6 +239,10 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
     }
     if (_usernameField) {
         CGSize fieldSize = [_usernameField sizeThatFits:boundingSize];
+        size.height += fieldSize.height;
+    }
+    if (_userLastNameField) {
+        CGSize fieldSize = [_userLastNameField sizeThatFits:boundingSize];
         size.height += fieldSize.height;
     }
     if (_emailField && !_emailAsUsername) {

@@ -347,14 +347,21 @@ NSString *const PFLogInCancelNotification = @"com.parse.ui.login.cancel";
     }
 
     self.loading = YES;
-    if ([_logInView.logInButton isKindOfClass:[PFPrimaryButton class]]) {
+//    if ([_logInView.logInButton isKindOfClass:[PFPrimaryButton class]]) {
+//        [(PFActionButton *)_logInView.logInButton setLoading:YES];
+//    }
+    
+    if ([_logInView.logInButton isKindOfClass:[PFActionButton class]]) {
         [(PFActionButton *)_logInView.logInButton setLoading:YES];
     }
 
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *user, NSError *error) {
         self.loading = NO;
-        if ([_logInView.logInButton isKindOfClass:[PFPrimaryButton class]]) {
-            [(PFPrimaryButton *)_logInView.logInButton setLoading:NO];
+//        if ([_logInView.logInButton isKindOfClass:[PFPrimaryButton class]]) {
+//            [(PFPrimaryButton *)_logInView.logInButton setLoading:NO];
+//        }
+        if ([_logInView.logInButton isKindOfClass:[PFActionButton class]]) {
+            [(PFActionButton *)_logInView.logInButton setLoading:NO];
         }
 
         if (user) {

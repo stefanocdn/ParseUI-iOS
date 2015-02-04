@@ -109,6 +109,11 @@ typedef NS_OPTIONS(NSInteger, PFSignUpFields) {
 @property (nonatomic, strong, readonly) PFTextField *usernameField;
 
 /*!
+ @abstract The user last name text field.
+ */
+@property (nonatomic, strong, readonly) PFTextField *userLastNameField;
+
+/*!
  @abstract The password text field.
  */
 @property (nonatomic, strong, readonly) PFTextField *passwordField;
