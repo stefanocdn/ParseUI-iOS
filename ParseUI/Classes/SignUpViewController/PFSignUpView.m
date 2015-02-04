@@ -34,6 +34,16 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
 
 @implementation PFSignUpView
 
++ (PFActionButtonConfiguration *)_defaultSignUpButtonConfiguration {
+    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[PFColor signupButtonBackgroundColor]
+                                                                                                             image:nil];
+    NSString *title = NSLocalizedString(@"Sign Up", @"Sign Up");
+    [configuration setTitle:title forButtonStyle:PFActionButtonStyleNormal];
+    [configuration setTitle:title forButtonStyle:PFActionButtonStyleWide];
+    
+    return configuration;
+}
+
 #pragma mark -
 #pragma mark NSObject
 
@@ -97,7 +107,7 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
 //        _signUpButton = [[PFPrimaryButton alloc] initWithBackgroundImageColor:[PFColor signupButtonBackgroundColor]];
         _signUpButton = [[PFActionButton alloc] initWithConfiguration:[[self class] _defaultSignUpButtonConfiguration]
                                                          buttonStyle:PFActionButtonStyleNormal];
-        [_signUpButton setTitle:NSLocalizedString(@"Sign Up", @"Sign Up") forState:UIControlStateNormal];
+//        [_signUpButton setTitle:NSLocalizedString(@"Sign Up", @"Sign Up") forState:UIControlStateNormal];
         [self addSubview:_signUpButton];
     }
 
