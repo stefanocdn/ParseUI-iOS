@@ -55,8 +55,7 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
     }
 
     _usernameField = [[PFTextField alloc] initWithFrame:CGRectZero
-                                         separatorStyle:(PFTextFieldSeparatorStyleTop |
-                                                         PFTextFieldSeparatorStyleBottom)];
+                                         separatorStyle:PFTextFieldSeparatorStyleNone];
     _usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
     _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _usernameField.returnKeyType = UIReturnKeyNext;
@@ -64,30 +63,22 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
     [self _updateUsernameFieldStyle];
 
     _passwordField = [[PFTextField alloc] initWithFrame:CGRectZero
-                                         separatorStyle:PFTextFieldSeparatorStyleBottom];
+                                         separatorStyle:PFTextFieldSeparatorStyleNone];
     _passwordField.placeholder = NSLocalizedString(@"Password", @"Password");
     _passwordField.secureTextEntry = YES;
     _passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
     _passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    if (!(_fields & PFSignUpFieldsEmail) && !(_fields & PFSignUpFieldsAdditional)) {
-        _passwordField.returnKeyType = UIReturnKeyDone;
-    } else {
-        _passwordField.returnKeyType = UIReturnKeyNext;
-    }
+    _passwordField.returnKeyType = UIReturnKeyDone;
     [self addSubview:_passwordField];
 
     if (_fields & PFSignUpFieldsEmail) {
         _emailField = [[PFTextField alloc] initWithFrame:CGRectZero
-                                          separatorStyle:PFTextFieldSeparatorStyleBottom];
+                                          separatorStyle:PFTextFieldSeparatorStyleNone];
         _emailField.autocorrectionType = UITextAutocorrectionTypeNo;
         _emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _emailField.keyboardType = UIKeyboardTypeEmailAddress;
         _emailField.placeholder = NSLocalizedString(@"Email", @"Email");
-        if (!(_fields & PFSignUpFieldsAdditional)) {
-            _emailField.returnKeyType = UIReturnKeyDone;
-        } else {
-            _emailField.returnKeyType = UIReturnKeyNext;
-        }
+        _emailField.returnKeyType = UIReturnKeyNext;
         [self addSubview:_emailField];
     }
 
@@ -162,19 +153,19 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
 
         currentY = CGRectGetMaxY(frame);
     }
+    
+    if (_emailField && !_emailAsUsername) {
+        CGRect frame = PFRectMakeWithSizeCenteredInRect([_emailField sizeThatFits:contentSize], contentRect);
+        frame.origin.y = currentY;
+        _emailField.frame = frame;
+        
+        currentY = CGRectGetMaxY(frame);
+    }
 
     if (_passwordField) {
         CGRect frame = PFRectMakeWithSizeCenteredInRect([_passwordField sizeThatFits:contentSize], contentRect);
         frame.origin.y = currentY;
         _passwordField.frame = frame;
-
-        currentY = CGRectGetMaxY(frame);
-    }
-
-    if (_emailField && !_emailAsUsername) {
-        CGRect frame = PFRectMakeWithSizeCenteredInRect([_emailField sizeThatFits:contentSize], contentRect);
-        frame.origin.y = currentY;
-        _emailField.frame = frame;
 
         currentY = CGRectGetMaxY(frame);
     }
@@ -222,12 +213,12 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
         CGSize fieldSize = [_usernameField sizeThatFits:boundingSize];
         size.height += fieldSize.height;
     }
-    if (_passwordField) {
-        CGSize fieldSize = [_passwordField sizeThatFits:boundingSize];
-        size.height += fieldSize.height;
-    }
     if (_emailField && !_emailAsUsername) {
         CGSize fieldSize = [_emailField sizeThatFits:boundingSize];
+        size.height += fieldSize.height;
+    }
+    if (_passwordField) {
+        CGSize fieldSize = [_passwordField sizeThatFits:boundingSize];
         size.height += fieldSize.height;
     }
     if (_additionalField) {

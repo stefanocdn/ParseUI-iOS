@@ -180,17 +180,17 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         return YES;
     }
 
-    if (textField == _signUpView.passwordField) {
-        if (_signUpView.emailField) {
-            [_signUpView.emailField becomeFirstResponder];
+    if (textField == _signUpView.emailField) {
+        if (_signUpView.passwordField) {
+            [_signUpView.passwordField becomeFirstResponder];
             return YES;
         } else if (_signUpView.additionalField) {
             [_signUpView.additionalField becomeFirstResponder];
             return YES;
         }
     }
-
-    if (textField == _signUpView.emailField) {
+    
+    if (textField == _signUpView.passwordField) {
         if (_signUpView.additionalField) {
             [_signUpView.additionalField becomeFirstResponder];
             return YES;
@@ -243,8 +243,9 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     }
 
     [self _dismissKeyboard];
-
-    NSString *username = _signUpView.usernameField.text ?: @"";
+    
+    NSString *fullName = _signUpView.usernameField.text ?: @"";
+    NSString *username = _signUpView.emailField.text ?: @"";
     NSString *password = _signUpView.passwordField.text ?: @"";
     NSString *email = (self.emailAsUsername ? username : _signUpView.emailField.text);
     NSString *additional = _signUpView.additionalField.text;
@@ -258,11 +259,39 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     if (additional) {
         dictionary[PFSignUpViewControllerDelegateInfoAdditionalKey] = additional;
     }
-
+    
+    dictionary[PFSignUpViewControllerDelegateInfoFullNameKey] = fullName;
+    
     if (_delegateExistingMethods.shouldSignUp) {
         if (![_delegate signUpViewController:self shouldBeginSignUp:dictionary]) {
             return;
         }
+    }
+    
+    if ([fullName length] == 0) {
+        NSString *errorMessage = NSLocalizedString(@"First And Last Name must be set.",
+                                                   @"Name missing error message in PFSignUpViewController");
+        errorMessage = [NSString stringWithFormat:errorMessage, (unsigned long)_minPasswordLength];
+        NSError *error = [NSError errorWithDomain:PFParseErrorDomain
+                                             code:0
+                                         userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
+        [self _signUpDidFailWithError:error];
+        [_signUpView.usernameField becomeFirstResponder];
+        
+        return;
+    }
+    
+    if ([email length] == 0) {
+        NSString *errorMessage = NSLocalizedString(@"Email must be set.",
+                                                   @"Email missing error message in PFSignUpViewController");
+        errorMessage = [NSString stringWithFormat:errorMessage, (unsigned long)_minPasswordLength];
+        NSError *error = [NSError errorWithDomain:PFParseErrorDomain
+                                             code:0
+                                         userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
+        [self _signUpDidFailWithError:error];
+        [_signUpView.emailField becomeFirstResponder];
+        
+        return;
     }
 
     if ([password length] < _minPasswordLength) {
@@ -281,10 +310,12 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     PFUser *user = [PFUser user];
     user.username = username;
     user.password = password;
-
+    user[@"fullName"] = fullName;
+    user[@"fullNameLower"] = [fullName lowercaseString];
     if (email) {
         user.email = email;
     }
+    
     if (additional) {
         user[PFSignUpViewControllerDelegateInfoAdditionalKey] = additional;
     }

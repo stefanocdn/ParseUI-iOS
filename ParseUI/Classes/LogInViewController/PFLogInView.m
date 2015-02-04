@@ -100,8 +100,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
 
     if (_fields & PFLogInFieldsUsernameAndPassword) {
         _usernameField = [[PFTextField alloc] initWithFrame:CGRectZero
-                                             separatorStyle:(PFTextFieldSeparatorStyleTop |
-                                                             PFTextFieldSeparatorStyleBottom)];
+                                             separatorStyle:PFTextFieldSeparatorStyleNone];
         _usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameField.returnKeyType = UIReturnKeyNext;
