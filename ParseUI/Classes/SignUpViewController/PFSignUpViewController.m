@@ -177,7 +177,12 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == _signUpView.usernameField) {
-        [_signUpView.passwordField becomeFirstResponder];
+        [_signUpView.userLastNameField becomeFirstResponder];
+        return YES;
+    }
+    
+    if (textField == _signUpView.userLastNameField) {
+        [_signUpView.emailField becomeFirstResponder];
         return YES;
     }
 
@@ -438,6 +443,11 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
     if ([_signUpView.usernameField isFirstResponder]) {
         return _signUpView.usernameField;
     }
+    
+    if ([_signUpView.userLastNameField isFirstResponder]) {
+        return _signUpView.userLastNameField;
+    }
+    
     if ([_signUpView.passwordField isFirstResponder]) {
         return _signUpView.passwordField;
     }
@@ -557,6 +567,7 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         _loading = loading;
 
         _signUpView.usernameField.enabled = !self.loading;
+        _signUpView.userLastNameField.enabled = !self.loading;
         _signUpView.passwordField.enabled = !self.loading;
         _signUpView.emailField.enabled = !self.loading;
         _signUpView.additionalField.enabled = !self.loading;
