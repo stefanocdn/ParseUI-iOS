@@ -93,7 +93,9 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
     }
 
     if (_fields & PFSignUpFieldsSignUpButton) {
-        _signUpButton = [[PFPrimaryButton alloc] initWithBackgroundImageColor:[PFColor signupButtonBackgroundColor]];
+//        _signUpButton = [[PFPrimaryButton alloc] initWithBackgroundImageColor:[PFColor signupButtonBackgroundColor]];
+        _signUpButton = [[PFActionButton alloc] initWithConfiguration:[[self class] _defaultSignUpButtonConfiguration]
+                                                         buttonStyle:PFActionButtonStyleNormal];
         [_signUpButton setTitle:NSLocalizedString(@"Sign Up", @"Sign Up") forState:UIControlStateNormal];
         [self addSubview:_signUpButton];
     }
@@ -179,7 +181,7 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
     }
 
     if (_signUpButton) {
-        CGFloat loginButtonTopInset = floorf(24.0f * contentSizeScale.height);
+        CGFloat loginButtonTopInset = floorf(12.0f * contentSizeScale.height);
 
         CGRect frame = PFRectMakeWithSizeCenteredInRect([_signUpButton sizeThatFits:contentSize], contentRect);;
         frame.origin.y = currentY + loginButtonTopInset;
@@ -226,7 +228,7 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
         size.height += fieldSize.height;
     }
     if (_signUpButton) {
-        CGFloat buttonTopInset = floorf(24.0f * contentSizeScale.height);
+        CGFloat buttonTopInset = floorf(12.0f * contentSizeScale.height);
 
         CGSize buttonSize = [_signUpButton sizeThatFits:boundingSize];
 

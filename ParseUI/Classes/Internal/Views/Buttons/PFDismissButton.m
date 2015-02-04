@@ -45,8 +45,10 @@
 
     UIGraphicsBeginImageContextWithOptions(imageRect.size, NO, 0.0f);
 
-    [[UIColor colorWithRed:91.0f/255.0f green:107.0f/255.0f blue:118.0f/255.0f alpha:1.0f] setStroke];
-
+    //[[UIColor colorWithRed:91.0f/255.0f green:107.0f/255.0f blue:118.0f/255.0f alpha:1.0f] setStroke];
+    
+    [[UIColor whiteColor] setStroke];
+    
     UIBezierPath *path = [UIBezierPath bezierPath];
 
     [path moveToPoint:CGPointZero];

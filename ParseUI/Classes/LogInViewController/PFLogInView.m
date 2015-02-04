@@ -108,7 +108,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
         [self _updateUsernameFieldStyle];
 
         _passwordField = [[PFTextField alloc] initWithFrame:CGRectZero
-                                             separatorStyle:PFTextFieldSeparatorStyleBottom];
+                                             separatorStyle:PFTextFieldSeparatorStyleNone];
         _passwordField.placeholder = NSLocalizedString(@"Password", @"Password");
         _passwordField.secureTextEntry = YES;
         _passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -131,7 +131,9 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
     }
 
     if (_fields & PFLogInFieldsLogInButton) {
-        _logInButton = [[PFPrimaryButton alloc] initWithBackgroundImageColor:[PFColor loginButtonBackgroundColor]];
+//        _logInButton = [[PFPrimaryButton alloc] initWithBackgroundImageColor:[PFColor loginButtonBackgroundColor]];
+        _logInButton = [[PFActionButton alloc] initWithConfiguration:[[self class] _defaultSignUpButtonConfiguration]
+                                          buttonStyle:PFActionButtonStyleNormal];
         [_logInButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
         [self addSubview:_logInButton];
     }
@@ -281,7 +283,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
     }
 
     if (_logInButton) {
-        CGFloat loginButtonTopInset = floorf(24.0f * contentSizeScale.height);
+        CGFloat loginButtonTopInset = floorf(12.0f * contentSizeScale.height);
 
         CGRect frame = PFRectMakeWithSizeCenteredInRect([_logInButton sizeThatFits:loginContentSize],
                                                         loginContentRect);;
@@ -327,7 +329,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
         size.height += fieldSize.height;
     }
     if (_logInButton) {
-        CGFloat loginButtonTopInset = 24.0f * contentSizeScale.height;
+        CGFloat loginButtonTopInset = 12.0f * contentSizeScale.height;
 
         CGSize buttonSize = [_logInButton sizeThatFits:boundingSize];
 
