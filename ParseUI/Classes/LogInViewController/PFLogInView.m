@@ -39,10 +39,20 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
 #pragma mark -
 #pragma mark Class
 
-+ (PFActionButtonConfiguration *)_defaultSignUpButtonConfiguration {
-    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[PFColor signupButtonBackgroundColor]
++ (PFActionButtonConfiguration *)_defaultLogInButtonConfiguration {
+    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:39.0f/255.0f green:59.0f/255.0f blue:101.0f/255.0f alpha:1.0]
                                                                                                              image:nil];
-    NSString *title = NSLocalizedString(@"Sign Up", @"Sign Up");
+    NSString *title = NSLocalizedString(@"Log In", @"Log In");
+    [configuration setTitle:title forButtonStyle:PFActionButtonStyleNormal];
+    [configuration setTitle:title forButtonStyle:PFActionButtonStyleWide];
+    
+    return configuration;
+}
+
++ (PFActionButtonConfiguration *)_defaultSignUpButtonConfiguration {
+    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:216.0f/255.0f green:83.0f/255.0f blue:47.0f/255.0f]
+                                                                                                             image:nil];
+    NSString *title = NSLocalizedString(@"Create an Account", @"Create an Account");
     [configuration setTitle:title forButtonStyle:PFActionButtonStyleNormal];
     [configuration setTitle:title forButtonStyle:PFActionButtonStyleWide];
 
@@ -132,9 +142,9 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
 
     if (_fields & PFLogInFieldsLogInButton) {
 //        _logInButton = [[PFPrimaryButton alloc] initWithBackgroundImageColor:[PFColor loginButtonBackgroundColor]];
-        _logInButton = [[PFActionButton alloc] initWithConfiguration:[[self class] _defaultSignUpButtonConfiguration]
+        _logInButton = [[PFActionButton alloc] initWithConfiguration:[[self class] _defaultLogInButtonConfiguration]
                                           buttonStyle:PFActionButtonStyleNormal];
-        [_logInButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
+//        [_logInButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
         [self addSubview:_logInButton];
     }
 
