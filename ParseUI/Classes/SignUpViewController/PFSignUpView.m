@@ -35,7 +35,7 @@ static NSString *const PFSignUpViewDefaultLogoImageName = @"parse_logo.png";
 @implementation PFSignUpView
 
 + (PFActionButtonConfiguration *)_defaultSignUpButtonConfiguration {
-    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:216.0f/255.0f green:83.0f/255.0f blue:47.0f/255.0f alpha:1.0]
+    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:59.0f/255.0f green:66.0f/255.0f blue:175.0f/255.0f alpha:1.0]
                                                                                                              image:nil];
     NSString *title = NSLocalizedString(@"Sign Up", @"Sign Up");
     [configuration setTitle:title forButtonStyle:PFActionButtonStyleNormal];
