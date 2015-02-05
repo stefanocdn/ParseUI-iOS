@@ -40,7 +40,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
 #pragma mark Class
 
 + (PFActionButtonConfiguration *)_defaultLogInButtonConfiguration {
-    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:59.0f/255.0f green:66.0f/255.0f blue:175.0f/255.0f alpha:1.0]
+    PFActionButtonConfiguration *configuration = [[PFActionButtonConfiguration alloc] initWithBackgroundImageColor:[UIColor colorWithRed:22.0f/255.0f green:39.0f/255.0f blue:75.0f/255.0f alpha:1.0]
                                                                                                              image:nil];
     NSString *title = NSLocalizedString(@"Log In", @"Log In");
     [configuration setTitle:title forButtonStyle:PFActionButtonStyleNormal];
